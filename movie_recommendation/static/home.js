@@ -112,6 +112,8 @@ function showMovies(data) {
         var recommends = document.querySelectorAll('.recommend');
         recommends.forEach(function(link,i){
             link.addEventListener('click', event =>{
+                get_movie_cast(data[i].id,API_KEY)
+                console.log(cast_names);
                 var genre_set = []
                 data[i].genre_ids.forEach(function(genre_id){
                     genres.forEach(function(genre){
@@ -170,4 +172,34 @@ function showGenres(movie, i, id, title) {
 function getInput(){
     var inputVal = document.getElementById("searchbox").value;
     getMovies(inputVal);
+}
+
+function get_movie_cast(movie_id,my_api_key){
+  cast_ids= [];
+  cast_names = [];
+
+  top_10 = [0,1,2,3,4,5,6,7,8,9];
+  $.ajax({
+    type:'GET',
+    url:"https://api.themoviedb.org/3/movie/"+movie_id+"/credits?"+my_api_key,
+    async:false,
+    success: function(my_movie){
+      if(my_movie.cast.length>=10){
+        top_cast = [0,1,2,3,4,5,6,7,8,9];
+      }
+      else {
+        top_cast = [0,1,2,3,4];
+      }
+      for(var my_cast in top_cast){
+        cast_ids.push(my_movie.cast[my_cast].id)
+        cast_names.push(my_movie.cast[my_cast].name);
+      }
+    },
+    error: function(){
+      alert("Invalid Request!");
+      $("#loader").delay(500).fadeOut();
+    }
+  });
+
+  return {cast_ids:cast_ids,cast_names:cast_names};
 }
