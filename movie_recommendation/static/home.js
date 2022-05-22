@@ -112,6 +112,20 @@ function showMovies(data) {
         var recommends = document.querySelectorAll('.recommend');
         recommends.forEach(function(link,i){
             link.addEventListener('click', event =>{
+
+                const toSend = {
+                    titile: data[i].title,
+                };
+                const jsonString = JSON.stringify(toSend)
+                console.log(jsonString)
+
+                $.ajax({
+                  url:"",
+                  type:"POST",
+                  contentType:"application/json",
+                  data: jsonString
+                })
+
                 get_movie_cast(data[i].id,API_KEY)
                 console.log(cast_names);
                 var genre_set = []
