@@ -85,6 +85,22 @@ const genres = [
     }
   ]
 
+function getToken(name){
+  var cookieValue = null;
+  if(document.cookie && document.cookie !==''){
+    var cookies = document.cookie.split(';')
+    for(var i=0;i<cookies.length;i++){
+      var cookie = cookies[i].trim();
+      if(cookie.substring(0,name.length+1)===(name+'=')){
+        cookieValue = decodeURIComponent(cookie.substring(name.length+1));
+        break;
+      }
+    }
+  }
+  return cookieValue;
+}
+var csrftoken = getToken('csrftoken');
+
 function getMovies(inputVal){
     var url = BASE_URL + '/search/movie?' + API_KEY + '&query=' + inputVal;
     fetch(url).then(res => res.json()).then(data => {
@@ -113,17 +129,20 @@ function showMovies(data) {
         recommends.forEach(function(link,i){
             link.addEventListener('click', event =>{
 
-                const toSend = {
-                    titile: data[i].title,
-                };
-                const jsonString = JSON.stringify(toSend)
-                console.log(jsonString)
-
-                $.ajax({
-                  url:"",
-                  type:"POST",
-                  contentType:"application/json",
-                  data: jsonString
+                fetch('cosineSimilarity/',{
+                  method:'POST',
+                  headers:{
+                      'Content-Type':'application/json',
+                      'X-CSRFToken':csrftoken,
+                  },
+                  body:JSON.stringify({'title':data[i].title})
+                })
+                .then((response)=>{
+                  response.json()
+                })
+          
+                .then((data)=>{
+                    console.log('data:',data)
                 })
 
                 get_movie_cast(data[i].id,API_KEY)
@@ -137,6 +156,10 @@ function showMovies(data) {
                     })
                 })
                 console.log(genre_set);
+
+                // fetch('cosineSimilarity/').then(res => res.json()).then(data => {
+                //   console.log(data);
+                // })
 
                 poster_path = data[i].poster_path;
                 title = data[i].title;
@@ -168,6 +191,8 @@ function showMovies(data) {
                     <p style="margin-left:30px;">${overview}<p>
                 </div>
                 <h2 style="color:white;margin:40px 0 0 40px;">Recommended movies:</h2>
+
+
                     `
             })
         })
