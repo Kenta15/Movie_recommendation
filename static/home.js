@@ -153,7 +153,9 @@ function showMovies(data) {
                 console.log(title)
                 console.log(genre_set)
 
-                fetch('cosineSimilarity/',{
+                var url = '/cosineSimilarity/'
+
+                fetch(url,{
                   method:'POST',
                   headers:{
                       'Content-Type':'application/json',
