@@ -153,7 +153,7 @@ function showMovies(data) {
                 console.log(title)
                 console.log(genre_set)
 
-                var url = 'https://movie-recommendation171.herokuapp.com//cosineSimilarity/'
+                var url = 'cosineSimilarity/'
 
                 fetch(url,{
                   method:'POST',
