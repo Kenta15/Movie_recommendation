@@ -1,10 +1,10 @@
-const API_KEY = 'api_key=87f1f400a3e1445d86fdd4366532e611';
+const API_KEY = 'api_key=87f1f400a3e1445d86fdd4366532e611'
 
-const IMG_URL= 'https://image.tmdb.org/t/p/original';
+const IMG_URL= 'https://image.tmdb.org/t/p/original'
 
-const BASE_URL = 'https://api.themoviedb.org/3';
+const BASE_URL = 'https://api.themoviedb.org/3'
 
-const API_URL = BASE_URL + '/discover/movie?' + API_KEY;
+const API_URL = BASE_URL + '/discover/movie?' + API_KEY
 
 const genres = [
     {
@@ -85,6 +85,7 @@ const genres = [
     }
   ]
 
+// csrf token for fetching
 function getToken(name){
   var cookieValue = null
   if(document.cookie && document.cookie !==''){
@@ -101,6 +102,7 @@ function getToken(name){
 }
 var csrftoken = getToken('csrftoken')
 
+// fetching movie info using API
 function getMovies(inputVal){
     var url = BASE_URL + '/search/movie?' + API_KEY + '&query=' + inputVal
     fetch(url).then(res => res.json()).then(data => {
@@ -110,7 +112,7 @@ function getMovies(inputVal){
   main.innerHTML = url
 }
 
-
+// displaying movies based on the user input
 function showMovies(data) {
     main.innerHTML = ''
     recom.innerHTML = ''
@@ -150,10 +152,9 @@ function showMovies(data) {
                 genre_ids = data[i].genre_ids
                 release_date = data[i].release_date
 
-                console.log(title)
-                console.log(genre_set)
+                var url = '/cosineSimilarity/'
 
-                fetch('cosineSimilarity/',{
+                fetch(url,{
                   method:'POST',
                   headers:{
                       'Content-Type':'application/json',
@@ -172,7 +173,7 @@ function showMovies(data) {
                 })
                 .catch(() => {
                   error_page()
-                });
+                })
 
                 document.getElementById("main").innerHTML = `
                 <h2 style="color:white;margin:40px 0 0 40px;">You clicked:</h2>
@@ -203,6 +204,7 @@ function showMovies(data) {
         })
 }
 
+// displaying error message if the clicked movie is not in our dataset
 function error_page(){
   console.log("not available")
   var recommendations = document.createElement('div')
@@ -215,14 +217,14 @@ function error_page(){
     recom.appendChild(recommendations)
 }
 
-// searching movies for each top 15 highest cosineSimilarity
-function search_movie(top_15_movies){
-  top_15 = top_15_movies['recommendations']
-  top_15_genres = top_15_movies['recommendations_genres']
-  top_15.forEach((movie,i)=>{
+// searching movies which have high similarities
+function search_movie(recommendation_movies){
+  top_movies = recommendation_movies['recommendations']
+  top_movies_genres = recommendation_movies['recommendations_genres']
+  top_movies.forEach((movie,i)=>{
     var url = BASE_URL + '/search/movie?' + API_KEY + '&query=' + movie
     fetch(url).then(res => res.json()).then(data => {
-      recom_movie(data.results,movie,top_15_genres[i])
+      recom_movie(data.results,movie,top_movies_genres[i])
     })
   })
 }
@@ -230,7 +232,6 @@ function search_movie(top_15_movies){
 // list all recommended movies in html
 function recom_movie(data,movie,genre){
   data.forEach((each_data)=>{
-
     if(each_data.title.toLowerCase() == movie){
       // getting genres by genre_ids
       var genre_set = []
@@ -242,37 +243,61 @@ function recom_movie(data,movie,genre){
           })
       })
 
-      break_count = 0
-      genre.forEach((gen)=>{
-        if(genre_set.includes(gen)){
+      genre.forEach((gen,i)=>{
+        if(gen == 'Sci-Fi'){
+          genre[i] = 'Science Fiction'
+        }
+      })
+
+      genre_set = genre_set.sort()
+      genre = genre.sort()
+
+      console.log(each_data.title,genre_set)
+      console.log(each_data.title,genre)
+
+      if(genre_set.length > genre.length){
+        big_genre = genre_set
+        small_genre = genre
+      }
+      else{
+        big_genre = genre
+        small_genre = genre_set
+      }
+
+      containsAll = small_genre.every(element => {
+            return big_genre.includes(element)
+          })
+  
+      if(containsAll){
           poster_path = each_data.poster_path
           title = each_data.title
           var recommendations = document.createElement('div')
           recommendations.classList.add('movie')
-          if(poster_path != null && break_count != 1){
+          if(poster_path != null){
             recommendations.innerHTML = `
                   <div class="image-container" style="margin:40px 0 0 40px;">
                     <img class="images" src="${poster_path? IMG_URL+poster_path:"http://via.placeholder.com/1080x1580" }" alt="${title}">
                   </div>
                 `
+                console.log(each_data.title,'showed')
           }
           recom.appendChild(recommendations)
-          break_count = 1
+          break_count = break_count + 1
         }
-      })
-    }
-  })
-}
+      }
+    })
+  }
 
-function showGenres(movie, i, id, title) {  
+function showGenres(movie, i, id, title) { 
     movie.genres.forEach((genre) => {
-        const {id, name} = genre;
+        const {id, name} = genre
     })
 }
 
+// getting user input
 function getInput(){
-    var inputVal = document.getElementById("searchbox").value;
-    getMovies(inputVal);
+    var inputVal = document.getElementById("searchbox").value
+    getMovies(inputVal)
 }
 
 // function get_movie_cast(movie_id,my_api_key){
