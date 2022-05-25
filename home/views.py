@@ -37,6 +37,8 @@ def cosineSimilarity(request):
 
     # Cosine Similarity
 
+    num_of_recommendations = 15
+
     result = cosine_similarity(vectors,target)
 
     similarities = [0] * len(result)
@@ -44,20 +46,21 @@ def cosineSimilarity(request):
         similarities[i] = result[i][0]
     
     max = 0
-    indexes_of_top_15 = [0] * 16
-    for i in range(16):
+    indexes_of_top_movies = [0] * (num_of_recommendations + 1)
+    for i in range(num_of_recommendations + 1):
         for j in range(len(similarities)):
             if similarities[max] < similarities[j]:
                 max = j
-        indexes_of_top_15[i] = max
+        indexes_of_top_movies[i] = max
         similarities[max] = 0.0
 
-    # retrieving movie title for top_15
-    top_15_movie_titles = ['NA'] * 15
-    top_15_movie_genres = [['NA']] * 15
+    # retrieving movie title which has high similarities
+    recommendation_movie_titles = ['NA'] * num_of_recommendations
+    recommendation_movie_genres = [['NA']] * num_of_recommendations
 
-    for i in range(15):
-        top_15_movie_titles[i] = df['movie_title'][indexes_of_top_15[i+1]] # first index is the same movie
-        top_15_movie_genres[i] = df['genres'][indexes_of_top_15[i+1]]
-    
-    return JsonResponse({'recommendations':top_15_movie_titles,'recommendations_genres':top_15_movie_genres})
+    for i in range(num_of_recommendations):
+        if df['movie_title'][indexes_of_top_movies[i+1]] != title and df['movie_title'][indexes_of_top_movies[i+1]] not in recommendation_movie_titles:
+            recommendation_movie_titles[i] = df['movie_title'][indexes_of_top_movies[i+1]] # first index is the same movie
+            recommendation_movie_genres[i] = df['genres'][indexes_of_top_movies[i+1]]
+
+    return JsonResponse({'recommendations':recommendation_movie_titles,'recommendations_genres':recommendation_movie_genres})
