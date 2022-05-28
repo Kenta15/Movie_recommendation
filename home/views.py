@@ -6,7 +6,6 @@ import numpy as np
 from sklearn.metrics.pairwise import cosine_similarity
 from sklearn.feature_extraction.text import CountVectorizer
 from django.http import HttpResponse
-# from flask imort Flask
 
 # Create your views here.
 
@@ -20,7 +19,8 @@ def cosineSimilarity(request):
     title = data['title'].lower()
     genres = data['genres']
 
-    df=pd.read_csv("/Users/kentatanaka/Downloads/Classes/ECS171/Project/Movie_recommendation/movie_recommendation/home/JupyterNotebook/dataset/preprocessed_dataset.csv")
+    # df=pd.read_csv("/Users/kentatanaka/Downloads/Classes/ECS171/Project/Movie_recommendation/movie_recommendation/home/JupyterNotebook/dataset/preprocessed_dataset.csv")
+    df=pd.read_csv("preprocessed_dataset.csv")
     
     for i, genre in enumerate(df['genres']): # genres has a few attributes so we have to splite each genre
         df['genres'][i] = str(genre).split()
