@@ -154,7 +154,7 @@ function showMovies(data) {
             genre_ids = data[i].genre_ids
             release_date = data[i].release_date
 
-            var url = 'https://movie-recommendation171.herokuapp.com/movie_recommendation/cosineSimilarity/'
+            var url = 'cosineSimilarity/'
 
             fetch(url,{
               method:'POST',
