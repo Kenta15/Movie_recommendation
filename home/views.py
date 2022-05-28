@@ -31,11 +31,11 @@ def cosineSimilarity(request):
                 if genre in df['genres'][i]:
                     index_of_title = i
 
+    # Cosine Similarity
+
     cv = CountVectorizer()
     vectors = cv.fit_transform(df['comb'].astype('U'))
     target = vectors[index_of_title]
-
-    # Cosine Similarity
 
     num_of_recommendations = 15
 
