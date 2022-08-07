@@ -9,6 +9,25 @@ This project let user input any movie titles and click one of the results.
 
 After clicking, it shows the movie details as well as recommendations based on the movie.
 
+## Setup
+
+Download [Python](https://www.python.org/downloads/) and [Anaconda](https://www.anaconda.com/products/distribution).
+Run these commands:
+
+```diff
+# Install Django
+python -m pip install Django
+
+# Activate Django
+conda activate djangoenv
+
+# Move to the file directory
+cd ecommerce
+
+# Run the local server
+python manage.py runserver
+```
+
 ## Code Example
 
 As soon as a user input is entered, the fetch API is called to send the input to backend
