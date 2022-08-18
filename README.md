@@ -74,3 +74,6 @@ Use this link to visit our website: [Movie Recommender](https://movie-recommenda
 This github repository helped us to create this web application.
 
 https://github.com/kishan0725/The-Movie-Cinema
+
+## Project Report
+Here is our project report: [Project Report](https://drive.google.com/file/d/1vlsnavIr8DlYQ5d2I_8qd3KR8mOXfJZX/view?usp=sharing)
