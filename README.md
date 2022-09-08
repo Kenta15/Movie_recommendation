@@ -14,7 +14,7 @@ After clicking, it shows the movie details as well as recommendations based on t
 
 ## Setup
 
-Download [Python](https://www.python.org/downloads/) and [Anaconda](https://www.anaconda.com/products/distribution).
+Download [Python](https://www.python.org/downloads/).
 Run these commands:
 
 ```diff
