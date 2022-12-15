@@ -67,13 +67,11 @@ Created account in https://www.themoviedb.org/, then got own API key.
 
 * [Movies in 2020](https://en.wikipedia.org/wiki/List_of_American_films_of_2020), [Movies in 2021](https://en.wikipedia.org/wiki/List_of_American_films_of_2021), [Movies in 2022](https://en.wikipedia.org/wiki/List_of_American_films_of_2022)
 
-## Application Link
-Use this link to visit our website: [Movie Recommender](https://movie-recommendation171.herokuapp.com/)
+## Demo
+Demo video: [Demo](https://github.com/kishan0725/The-Movie-Cinema)
 
 ## References
 This github repository helped us to create this web application.
-
-https://github.com/kishan0725/The-Movie-Cinema
 
 ## Project Report
 Here is our project report: [Project Report](https://drive.google.com/file/d/1vlsnavIr8DlYQ5d2I_8qd3KR8mOXfJZX/view?usp=sharing)
